@@ -1,0 +1,8 @@
+
+
+# Blaze generated files
+
+bazel-bin
+bazel-diamond
+bazel-out
+bazel-testlogs
