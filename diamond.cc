@@ -1,10 +1,16 @@
 #include <CImg.h>
 #include <unistd.h>
 
+#include <bitflags/bitflags.hpp>
 #include <iostream>
 #include <string>
 
 using namespace cimg_library;
+
+BEGIN_BITFLAGS(Flags)
+FLAG(flag_a)
+FLAG(flag_b)
+END_BITFLAGS(Flags)
 
 int main(int argc, char **argv) {
   const int width = 320;
@@ -21,7 +27,9 @@ int main(int argc, char **argv) {
       img.draw_point(i, j, color);
     }
   }
-
   main_window.display(img);
-  sleep(4);
+
+  Flags flags = Flags::flag_a;
+  std::cout << flags.contains(Flags::flag_a) << std::endl;  // true
+  std::cout << flags.contains(Flags::flag_b) << std::endl;  // false
 }
