@@ -26,7 +26,7 @@ class NdsDisplay {
   cimg_library::CImg<> img;
   cimg_library::CImgDisplay display;
 
-  static constexpr double fps = 10.0;
+  static constexpr double fps = 20.0;
 
   std::atomic<bool> stop_thread_flag;
   std::thread display_thread;
