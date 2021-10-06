@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 class Nds9MemoryMap {
- private:
+ protected:
   enum MemoryMapSection : uint32_t {
     MAIN_MEMORY = 0x20000000,
     SHARED_WRAM = 0x30000000,
@@ -29,6 +29,9 @@ class Nds9MemoryMap {
   static constexpr size_t NumMemoryMapSections =
       sizeof(MemoryMapSections) / sizeof(MemoryMapSections[0]);
 
+  // array of pointers to memory chunk of corresponding section
+  uint8_t* MemoryMapChunks[sizeof(MemoryMapSections)];
+
   // array of sizes corresponding to sections
   static constexpr uint32_t MemoryMapSizes[] = {
       0x400000, 0x2000000, 0x4000, 0x800,     0x80000, 0x20000, 0x40000,
@@ -38,12 +41,9 @@ class Nds9MemoryMap {
 
   void validateChunkAddress(uint32_t chunk_addr, size_t section_num) {
     if (chunk_addr >= MemoryMapSizes[section_num])
-      throw std::out_of_range("Address not in memory range");
+      throw std::out_of_range("Address " + std::to_string(chunk_addr) +
+                              " not in memory range");
   };
-
- protected:
-  // array of pointers to memory chunk of corresponding section
-  uint8_t* MemoryMapChunks[sizeof(MemoryMapSections)];
 
  public:
   Nds9MemoryMap();

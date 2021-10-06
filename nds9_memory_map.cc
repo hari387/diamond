@@ -4,7 +4,7 @@
 
 Nds9MemoryMap::Nds9MemoryMap() {
   for (size_t i = 0; i < NumMemoryMapSections; i++) {
-    MemoryMapChunks[i] = (uint8_t*)malloc(MemoryMapSizes[i]);
+    MemoryMapChunks[i] = (uint8_t*)calloc(MemoryMapSizes[i], 1);
   }
 };
 
@@ -56,10 +56,10 @@ void Nds9MemoryMap::storeByte(uint32_t addr, uint8_t val) {
 
 size_t Nds9MemoryMap::getMemoryMapSectionNumber(uint32_t addr) {
   if (addr < MemoryMapSections[0])
-    throw std::out_of_range("Address not in memory range");
-  size_t i;
-  for (i = 1; i < sizeof(MemoryMapSections) / sizeof(MemoryMapSections[0]);
-       i++) {
+    throw std::out_of_range("Address " + std::to_string(addr) +
+                            " not in memory range");
+  size_t i = 1;
+  for (; i < sizeof(MemoryMapSections) / sizeof(MemoryMapSections[0]); i++) {
     if (addr < MemoryMapSections[i]) return i - 1;
   }
   return i;
