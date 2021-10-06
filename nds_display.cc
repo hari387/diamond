@@ -3,6 +3,7 @@
 #include <CImg.h>
 
 #include <chrono>
+#include <cstdint>
 #include <iostream>
 
 constexpr char NdsDisplay::window_title[];
@@ -30,8 +31,16 @@ NdsDisplay::~NdsDisplay() {
 
 void NdsDisplay::displayMain(NdsDisplay* nds_display) {
   while (!nds_display->stop_thread_flag) {
+    uint8_t* color = nds_display->lcdc_vram;
+    for (int i = 0; i < 192; i++) {
+      for (int j = 0; j < 256; j++) {
+        nds_display->img.draw_point(j /*x-coordinate*/, i /*y-coordinate*/,
+                                    color);
+        color += 3;
+      }
+    }
+    nds_display->display.display(nds_display->img);
     std::this_thread::sleep_for(
         std::chrono::duration<double>(1.0 / nds_display->fps));
-    std::cout << "Printing from display thread" << std::endl;
   }
 }
