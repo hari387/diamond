@@ -41,8 +41,9 @@ class Nds9MemoryMap {
 
   void validateChunkAddress(uint32_t chunk_addr, size_t section_num) {
     if (chunk_addr >= MemoryMapSizes[section_num])
-      throw std::out_of_range("Address " + std::to_string(chunk_addr) +
-                              " not in memory range");
+      throw std::out_of_range("Out of Memory: Address " +
+                              std::to_string(chunk_addr) +
+                              " not in accessible memory range");
   };
 
  public:

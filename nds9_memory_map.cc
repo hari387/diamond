@@ -20,6 +20,9 @@ uint32_t Nds9MemoryMap::loadWord(uint32_t addr) {
 }
 
 uint16_t Nds9MemoryMap::loadHalfWord(uint32_t addr) {
+  if (addr & 1)
+    throw std::invalid_argument("Unaligned Access: " + std::to_string(addr) +
+                                " is not half-word aligned");
   size_t section_num = getMemoryMapSectionNumber(addr);
   addr -= MemoryMapSections[section_num];
   validateChunkAddress(addr, section_num);
@@ -56,8 +59,8 @@ void Nds9MemoryMap::storeByte(uint32_t addr, uint8_t val) {
 
 size_t Nds9MemoryMap::getMemoryMapSectionNumber(uint32_t addr) {
   if (addr < MemoryMapSections[0])
-    throw std::out_of_range("Address " + std::to_string(addr) +
-                            " not in memory range");
+    throw std::out_of_range("Out of Memory: Address " + std::to_string(addr) +
+                            " not in accessible memory range");
   size_t i = 1;
   for (; i < sizeof(MemoryMapSections) / sizeof(MemoryMapSections[0]); i++) {
     if (addr < MemoryMapSections[i]) return i - 1;
