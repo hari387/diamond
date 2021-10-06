@@ -21,15 +21,15 @@ int main(int argc, char** argv) {
   CImg<> img(width, height, 1, 3);
 
   // Create main window
-  // CImgDisplay main_window(img, "Random Data", 0);
-  const unsigned char color[] = {255, 128, 64};
+  CImgDisplay main_window(img, "Random Data", 0);
+  const unsigned char color[] = {255, 255, 255};
 
   for (int i = 0; i < 100; ++i) {
     for (int j = 0; j < 150; ++j) {
       img.draw_point(i, j, color);
     }
   }
-  // main_window.display(img);
+  main_window.display(img);
 
   if (argc < 2) {
     std::cerr << "Usage: ./diamond [rom_file]" << std::endl;
